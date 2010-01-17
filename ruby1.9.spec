@@ -4,7 +4,7 @@
 %define rel 1
 
 Summary:	Object Oriented Script Language
-Name:		ruby1.9
+Name:		ruby%{subver}
 Version:	%{rubyver}.%{patchversion}
 Release: 	%mkrel %rel
 License:	Ruby or GPLv2
@@ -18,9 +18,6 @@ BuildRequires:	db4-devel
 BuildRequires:  libgdbm-devel >= 1.8.3
 BuildRequires:  openssl-devel
 BuildRequires:	zlib1-devel
-Obsoletes:	ruby-rexml
-Provides:	ruby-rexml
-Conflicts:	ruby < 1.9
 Source0:	ftp://ftp.ruby-lang.org/pub/ruby/%{subver}/ruby-%{rubyver}-%{patchversion}.tar.bz2
 Source1:	http://www.rubycentral.com/faq/rubyfaqall.html.bz2
 Source2:	http://dev.rubycentral.com/downloads/files/ProgrammingRuby-0.4.tar.bz2
@@ -46,13 +43,11 @@ Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 %package	doc
 Summary:	Documentation for the powerful language Ruby
 Group:		Development/Ruby
-Conflicts:	ruby-doc < 1.9
 
 %package	devel
 Summary:	Development file for the powerful language Ruby
 Group:		Development/Ruby
 Requires:	%{name} = %{version}
-Conflicts:	ruby-devel < 1.9
 
 %package	tk
 Summary:	Tk extension for the powerful language Ruby
@@ -109,8 +104,9 @@ echo '.text' | gcc -shared -o libdummy.so.0 -xassembler - -ltcl -ltk >& /dev/nul
 
 CFLAGS=`echo %optflags | sed 's/-fomit-frame-pointer//'`
 %configure2_5x --enable-shared --disable-rpath --enable-pthread \
-	--with-sitedir=%_prefix/lib/ruby/site_ruby \
-	--with-vendordir=%_prefix/lib/ruby/vendor_ruby \
+	--with-ruby-version=minor --program-suffix=%{subver} \
+	--with-sitedir=%_prefix/lib/%{name}/site_ruby \
+	--with-vendordir=%_prefix/lib/%{name}/vendor_ruby \
 	--with-old-os=linux-gnu
 
 %make
@@ -138,7 +134,7 @@ EOF
 
 # Make the file/dirs list, filtering out tcl/tk and devel files
 ( cd %buildroot \
-  && find usr/lib/ruby/%{subver} \
+  && find usr/lib/%{name}/%{subver} \
           \( -not -type d -printf "/%%p\n" \) \
           -or \( -type d -printf "%%%%dir /%%p\n" \) \
 ) | egrep -v '/(tcl)?tk|(%{my_target_cpu}-%{_target_os}/.*[ha]$)' > %{name}.list
@@ -148,13 +144,13 @@ find %buildroot sample -type f | file -i -f - | grep text | cut -d: -f1 >text.li
 cat text.list | xargs chmod 0644
 #  Magic grepping to get only files with '#!' in the first line
 cat text.list | xargs grep -n '^#!' | grep ':1:#!' | cut -d: -f1 >shebang.list
-cat shebang.list | xargs sed -i -e 's|/usr/local/bin|/usr/bin|; s|\./ruby|/usr/bin/ruby|'
+cat shebang.list | xargs sed -i -e 's|/usr/local/bin|/usr/bin|; s|\./ruby|/usr/bin/%{name}|'
 cat shebang.list | xargs chmod 0755
 
 
 # Install the rpm macros 
 mkdir -p %buildroot%{_sysconfdir}/rpm/macros.d
-cp %{SOURCE3} %buildroot%{_sysconfdir}/rpm/macros.d
+cp %{SOURCE3} %buildroot%{_sysconfdir}/rpm/macros.d/%name.macros
 %check
 make test
 
@@ -174,9 +170,9 @@ rm -rf %buildroot
 %dir %{_docdir}/%{name}-%{version}
 %{_docdir}/%{name}-%{version}/README
 %{_bindir}/*
-%dir %{_prefix}/lib/ruby/
-%{_libdir}/libruby.so.*
-%{_prefix}/lib/ruby/site_ruby
+%dir %{_prefix}/lib/%{name}/
+%{_libdir}/lib%{name}.so.*
+%{_prefix}/lib/%{name}/site_ruby
 %{_mandir}/*/*
 %{_datadir}/emacs/site-lisp/*
 %config(noreplace) %{_sysconfdir}/emacs/site-start.d/*
@@ -195,15 +191,14 @@ rm -rf %buildroot
 
 %files devel
 %defattr(-, root, root)
-%{_prefix}/lib/ruby/%{subver}/%{my_target_cpu}-%{_target_os}/*.[ah]
-%{_libdir}/libruby-static.a
-%{_libdir}/libruby.so
+%{_prefix}/lib/%{name}/%{subver}/%{my_target_cpu}-%{_target_os}/*.[ah]
+%{_libdir}/lib%{name}-static.a
+%{_libdir}/lib%{name}.so
 
 %files tk
 %defattr(-, root, root)
-%{_prefix}/lib/ruby/%{subver}/%{my_target_cpu}-%{_target_os}/tcltk*
-%{_prefix}/lib/ruby/%{subver}/%{my_target_cpu}-%{_target_os}/tk*
-%{_prefix}/lib/ruby/%{subver}/tcltk*
-%{_prefix}/lib/ruby/%{subver}/tk*
-%{_prefix}/lib/ruby/%{subver}/test/unit/ui/tk
-
+%{_prefix}/lib/%{name}/%{subver}/%{my_target_cpu}-%{_target_os}/tcltk*
+%{_prefix}/lib/%{name}/%{subver}/%{my_target_cpu}-%{_target_os}/tk*
+%{_prefix}/lib/%{name}/%{subver}/tcltk*
+%{_prefix}/lib/%{name}/%{subver}/tk*
+%{_prefix}/lib/%{name}/%{subver}/test/unit/ui/tk
