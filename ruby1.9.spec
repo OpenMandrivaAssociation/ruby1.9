@@ -151,6 +151,7 @@ cat shebang.list | xargs chmod 0755
 # Install the rpm macros 
 mkdir -p %buildroot%{_sysconfdir}/rpm/macros.d
 cp %{SOURCE3} %buildroot%{_sysconfdir}/rpm/macros.d/%name.macros
+
 %check
 make test
 
@@ -180,7 +181,7 @@ rm -rf %buildroot
 
 %files doc
 %defattr(-, root, root)
-%{_datadir}/ri
+%{_datadir}/ri*
 %{_docdir}/%{name}-%{version}/COPYING*
 %{_docdir}/%{name}-%{version}/ChangeLog
 %{_docdir}/%{name}-%{version}/README.*
@@ -191,7 +192,7 @@ rm -rf %buildroot
 
 %files devel
 %defattr(-, root, root)
-%{_prefix}/lib/%{name}/%{subver}/%{my_target_cpu}-%{_target_os}/*.[ah]
+%{_includedir}/%{name}-%{subver}
 %{_libdir}/lib%{name}-static.a
 %{_libdir}/lib%{name}.so
 
@@ -201,4 +202,3 @@ rm -rf %buildroot
 %{_prefix}/lib/%{name}/%{subver}/%{my_target_cpu}-%{_target_os}/tk*
 %{_prefix}/lib/%{name}/%{subver}/tcltk*
 %{_prefix}/lib/%{name}/%{subver}/tk*
-%{_prefix}/lib/%{name}/%{subver}/test/unit/ui/tk
