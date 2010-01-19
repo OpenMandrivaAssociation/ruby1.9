@@ -1,7 +1,7 @@
 %define subver 1.9
 %define rubyver 1.9.1
 %define patchversion p378
-%define rel 2
+%define rel 3
 
 Summary:	Object Oriented Script Language
 Name:		ruby%{subver}
