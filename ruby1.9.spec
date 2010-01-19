@@ -1,7 +1,7 @@
 %define subver 1.9
 %define rubyver 1.9.1
 %define patchversion p378
-%define rel 1
+%define rel 2
 
 Summary:	Object Oriented Script Language
 Name:		ruby%{subver}
@@ -26,6 +26,7 @@ Patch0:		ruby-lib64.patch
 Patch1:		ruby-do-not-use-system-ruby-to-generate-ri-doc.patch
 Patch2:		ruby-add-old-os-to-search-path.patch
 Patch3:		ruby-do_not_propagate_no-undefined.patch
+Provides:	/usr/bin/ruby%{subver}
 URL:		http://www.ruby-lang.org/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
