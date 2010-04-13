@@ -112,7 +112,7 @@ CFLAGS=`echo %optflags | sed 's/-fomit-frame-pointer//'`
 	--with-vendordir=%_prefix/lib/%{name}/vendor_ruby \
 	--with-old-os=linux-gnu
 
-%make
+make
 
 
 %install
