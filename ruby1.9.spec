@@ -1,7 +1,7 @@
 %define subver 1.9
 %define rubyver 1.9.1
-%define patchversion p378
-%define rel 4
+%define patchversion p420
+%define rel 1
 
 Summary:	Object Oriented Script Language
 Name:		ruby%{subver}
@@ -18,6 +18,8 @@ BuildRequires:	db4-devel
 BuildRequires:  libgdbm-devel >= 1.8.3
 BuildRequires:  openssl-devel
 BuildRequires:	zlib1-devel
+BuildRequires:	ruby
+BuildRequires:	bison
 Source0:	ftp://ftp.ruby-lang.org/pub/ruby/%{subver}/ruby-%{rubyver}-%{patchversion}.tar.bz2
 Source1:	http://www.rubycentral.com/faq/rubyfaqall.html.bz2
 Source2:	http://dev.rubycentral.com/downloads/files/ProgrammingRuby-0.4.tar.bz2
@@ -107,6 +109,7 @@ echo '.text' | gcc -shared -o libdummy.so.0 -xassembler - -ltcl -ltk >& /dev/nul
 
 CFLAGS=`echo %optflags | sed 's/-fomit-frame-pointer//'`
 %configure2_5x --enable-shared --disable-rpath --enable-pthread \
+	--with-baseruby=%{_bindir}/ruby \
 	--with-ruby-version=minor --program-suffix=%{subver} \
 	--with-sitedir=%_prefix/lib/%{name}/site_ruby \
 	--with-vendordir=%_prefix/lib/%{name}/vendor_ruby \
