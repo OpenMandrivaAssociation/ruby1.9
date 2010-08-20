@@ -96,7 +96,7 @@ echo '.text' | gcc -shared -o libdummy.so.0 -xassembler - -ltcl -ltk >& /dev/nul
 }
 
 CFLAGS=`echo %optflags | sed 's/-fomit-frame-pointer//'`
-%configure2_5x --enable-shared --disable-rpath --enable-pthread \
+%configure2_5x --enable-shared --disable-rpath \
 	--with-soname=%{name} \
 	--with-baseruby=%{_bindir}/ruby \
 	--with-rubylibprefix=%{_prefix}/lib/%{name} \
