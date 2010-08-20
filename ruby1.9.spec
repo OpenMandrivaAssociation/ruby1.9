@@ -1,6 +1,6 @@
 %define subver 1.9
-%define rubyver 1.9.1
-%define patchversion p420
+%define rubyver 1.9.2
+%define patchversion p0
 %define rel 1
 
 Summary:	Object Oriented Script Language
@@ -90,6 +90,7 @@ This package contains the Tk extension for Ruby.
 
 %prep
 %setup -q -n ruby-%{rubyver}-%{patchversion}
+%if 0
 %patch0 -p0 -b .lib64
 %patch1 -p0 -b .ri
 %patch2 -p2 -b .old
@@ -97,6 +98,7 @@ This package contains the Tk extension for Ruby.
 %patch4 -p1 -b .openssl
 
 autoreconf
+%endif
 
 %build
 echo '.text' | gcc -shared -o libdummy.so.0 -xassembler - -ltcl -ltk >& /dev/null && {
