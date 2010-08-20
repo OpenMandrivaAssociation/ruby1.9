@@ -24,11 +24,6 @@ Source0:	ftp://ftp.ruby-lang.org/pub/ruby/%{subver}/ruby-%{rubyver}-%{patchversi
 Source1:	http://www.rubycentral.com/faq/rubyfaqall.html.bz2
 Source2:	http://dev.rubycentral.com/downloads/files/ProgrammingRuby-0.4.tar.bz2
 Source3:	ruby.macros
-Patch0:		ruby-lib64.patch
-Patch1:		ruby-do-not-use-system-ruby-to-generate-ri-doc.patch
-Patch2:		ruby-add-old-os-to-search-path.patch
-Patch3:		ruby-do_not_propagate_no-undefined.patch
-Patch4:		ruby-1.9.1-p378-openssl-1.0.patch
 Provides:	/usr/bin/ruby%{subver}
 URL:		http://www.ruby-lang.org/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
@@ -90,15 +85,6 @@ This package contains the Tk extension for Ruby.
 
 %prep
 %setup -q -n ruby-%{rubyver}-%{patchversion}
-%if 0
-%patch0 -p0 -b .lib64
-%patch1 -p0 -b .ri
-%patch2 -p2 -b .old
-%patch3 -p2 -b .undefined
-%patch4 -p1 -b .openssl
-
-autoreconf
-%endif
 
 %build
 echo '.text' | gcc -shared -o libdummy.so.0 -xassembler - -ltcl -ltk >& /dev/null && {
@@ -111,13 +97,14 @@ echo '.text' | gcc -shared -o libdummy.so.0 -xassembler - -ltcl -ltk >& /dev/nul
 
 CFLAGS=`echo %optflags | sed 's/-fomit-frame-pointer//'`
 %configure2_5x --enable-shared --disable-rpath --enable-pthread \
+	--with-soname=%{name} \
 	--with-baseruby=%{_bindir}/ruby \
+	--with-rubylibprefix=%{_prefix}/lib/%{name} \
 	--with-ruby-version=minor --program-suffix=%{subver} \
 	--with-sitedir=%_prefix/lib/%{name}/site_ruby \
-	--with-vendordir=%_prefix/lib/%{name}/vendor_ruby \
-	--with-old-os=linux-gnu
+	--with-vendordir=%_prefix/lib/%{name}/vendor_ruby
 
-make
+%make
 
 
 %install
@@ -182,6 +169,7 @@ rm -rf %buildroot
 %dir %{_prefix}/lib/%{name}/
 %{_libdir}/lib%{name}.so.*
 %{_prefix}/lib/%{name}/site_ruby
+%{_prefix}/lib/%{name}/gems/%{subver}/specifications
 %{_mandir}/*/*
 %{_datadir}/emacs/site-lisp/*
 %config(noreplace) %{_sysconfdir}/emacs/site-start.d/*
@@ -200,7 +188,7 @@ rm -rf %buildroot
 
 %files devel
 %defattr(-, root, root)
-%{_includedir}/%{name}-%{subver}
+%{_includedir}/ruby-%{subver}
 %{_libdir}/lib%{name}-static.a
 %{_libdir}/lib%{name}.so
 
