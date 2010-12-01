@@ -1,7 +1,7 @@
 %define subver 1.9
 %define rubyver 1.9.2
 %define patchversion p0
-%define rel 1
+%define rel 2
 
 Summary:	Object Oriented Script Language
 Name:		ruby%{subver}
@@ -17,7 +17,7 @@ BuildRequires:	tcl-devel tk-devel
 BuildRequires:	db4-devel
 BuildRequires:  libgdbm-devel >= 1.8.3
 BuildRequires:  openssl-devel
-BuildRequires:	zlib1-devel
+BuildRequires:	zlib-devel
 BuildRequires:	ruby
 BuildRequires:	bison
 Source0:	ftp://ftp.ruby-lang.org/pub/ruby/%{subver}/ruby-%{rubyver}-%{patchversion}.tar.bz2
