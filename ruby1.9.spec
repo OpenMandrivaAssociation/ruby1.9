@@ -1,7 +1,7 @@
 %define subver 1.9
 %define rubyver 1.9.2
 %define patchversion p0
-%define rel 2
+%define rel 3
 
 Summary:	Object Oriented Script Language
 Name:		ruby%{subver}
@@ -25,6 +25,7 @@ Source1:	http://www.rubycentral.com/faq/rubyfaqall.html.bz2
 Source2:	http://dev.rubycentral.com/downloads/files/ProgrammingRuby-0.4.tar.bz2
 Source3:	ruby.macros
 Provides:	/usr/bin/ruby%{subver}
+Provides:	ruby(abi) = %subver
 URL:		http://www.ruby-lang.org/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
