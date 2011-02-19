@@ -1,6 +1,6 @@
 %define subver 1.9
 %define rubyver 1.9.2
-%define patchversion p136
+%define patchversion p180
 %define rel 1
 
 Summary:	Object Oriented Script Language
