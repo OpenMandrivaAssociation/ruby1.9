@@ -1,6 +1,6 @@
 %define subver 1.9
-%define rubyver 1.9.2
-%define patchversion p290
+%define rubyver 1.9.3
+%define patchversion p0
 %define rel 1
 
 Summary:	Object Oriented Script Language
@@ -14,10 +14,11 @@ BuildRequires:	byacc
 BuildRequires:	ncurses-devel
 BuildRequires:	readline-devel
 BuildRequires:	tcl-devel tk-devel
-BuildRequires:	db4-devel
+BuildRequires:	db-devel
 BuildRequires:  libgdbm-devel >= 1.8.3
 BuildRequires:  openssl-devel
 BuildRequires:	zlib-devel
+BuildRequires:	yaml-devel
 BuildRequires:	ruby
 BuildRequires:	bison
 Source0:	ftp://ftp.ruby-lang.org/pub/ruby/%{subver}/ruby-%{rubyver}-%{patchversion}.tar.bz2
@@ -170,7 +171,7 @@ rm -rf %buildroot
 %dir %{_prefix}/lib/%{name}/
 %{_libdir}/lib%{name}.so.*
 %{_prefix}/lib/%{name}/site_ruby
-%{_prefix}/lib/%{name}/gems/%{subver}/specifications
+%{_prefix}/lib/%{name}/gems
 %{_mandir}/*/*
 %{_datadir}/emacs/site-lisp/*
 %config(noreplace) %{_sysconfdir}/emacs/site-start.d/*
@@ -192,6 +193,7 @@ rm -rf %buildroot
 %{_includedir}/ruby-%{subver}
 %{_libdir}/lib%{name}-static.a
 %{_libdir}/lib%{name}.so
+%{_libdir}/pkgconfig/ruby-%{subver}.pc
 
 %files tk
 %defattr(-, root, root)
