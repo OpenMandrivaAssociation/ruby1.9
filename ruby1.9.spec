@@ -27,7 +27,7 @@ Source2:	http://dev.rubycentral.com/downloads/files/ProgrammingRuby-0.4.tar.bz2
 Source3:	ruby.macros
 Provides:	/usr/bin/ruby%{subver}
 Provides:	ruby(abi) = %subver
-URL:		http://www.ruby-lang.org/
+URL:		https://www.ruby-lang.org/
 Buildroot:	%{_tmppath}/%{name}-%{version}-%{release}-root
 
 %define my_target_cpu %{_target_cpu}
